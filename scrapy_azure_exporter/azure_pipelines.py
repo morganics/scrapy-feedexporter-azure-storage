@@ -6,13 +6,15 @@ from scrapy.pipelines.images import ImagesPipeline
 class AzurePipelineMixin:
     @classmethod
     def from_settings(cls, settings):
-        pipeline = super().from_settings(settings)
-        pipeline.STORE_SCHEMES.update(
+        // upstream from_settings need the 'azure' key to be available
+        cls.STORE_SCHEMES.update(
             {
                 "azure": AzureFilesStore.new(settings),
                 "azurite": AzureFilesStore.new(settings),
             }
         )
+        
+        pipeline = super().from_settings(settings)
         return pipeline
 
 
